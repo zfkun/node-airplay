@@ -3,7 +3,7 @@ node-airplay
 
 node-airplay is a client library for Apple's AirPlay remote playback protocol.
 
-**some code full reference [node-airplay](https://github.com/benvanik/node-airplay) **, thanks.
+***some code full reference [node-airplay](https://github.com/benvanik/node-airplay), thanks!***
 
 
 ### Installation
@@ -13,7 +13,7 @@ From source:
 	git clone https://github.com/zfkun/node-airplay.git
 	npm link node-airplay
 
-`node-airplay` depends on both [node-plist](https://github.com/TooTallNate/node-plist) and [node_mdns](https://github.com/agnat/node_mdns). ***Unfortunately `node_mdns` is woefully out of date and has required many tweaks to get working, resulting in a [fork](https://github.com/Wizcorp/node_mdns).***
+`node-airplay` depends on both [node-plist](https://github.com/TooTallNate/node-plist) and [node_mdns](https://github.com/agnat/node_mdns). ***Unfortunately `node_mdns` is woefully out of date and has required many tweaks to get working, resulting in my [fork](https://github.com/zfkun/node_mdns).***
 
 
 ### Quickstart

@@ -12,8 +12,8 @@ browser.on( 'deviceOn', function( device ) {
     hls.open( '/Users/fankun/git/zfkun/iplay/video/1.mkv', function ( info ) {
         console.info( 'opened file:', info );
 
-        device.play( hls.getURI(), 0, function () {
-            console.info( '开始播放啦:', arguments );
+        device.play( hls.getURI(), 0, function ( res ) {
+            console.info( '开始播放啦: ', res );
 
             setTimeout(function(){
                 device.status( function ( info ) {
@@ -66,6 +66,7 @@ browser.on( 'deviceOn', function( device ) {
         });
 
     });
+
     // device.status( function ( info ) {
     //     console.info( 'AppleTV 状态:', info ? info : '未播放' );
     // });

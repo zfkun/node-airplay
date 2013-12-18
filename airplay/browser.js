@@ -8,7 +8,7 @@
 
 var util = require( 'util' );
 var events = require( 'events' );
-var mdns = require( 'mdns2' );
+var mdns = require( 'mdns' );
 
 var Device = require( './device' ).Device;
 

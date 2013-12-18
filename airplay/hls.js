@@ -22,12 +22,15 @@ function HLSServer( options ) {
     events.EventEmitter.call( this );
     options = options || {};
 
+    // TS分片时长(s)
+    this.tsDuration = options.tsDuration || 20;
     // 编解码库目录
     this.libDir = path.resolve( options.libDir || ( __dirname + '/../dep' ) );
     // TS分片输出目录
     this.outDir = path.resolve( options.outDir || ( __dirname + '/../video' ) );
-    // TS分片时长(s)
-    this.tsDuration = options.tsDuration || 20;
+    if ( !fs.existsSync( this.outDir ) ) {
+        fs.mkdirSync( this.outDir );
+    }
 }
 
 util.inherits( HLSServer, events.EventEmitter );
