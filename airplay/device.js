@@ -77,14 +77,27 @@ Device.prototype.match = function ( info ) {
 
 Device.prototype.getInfo = function() {
     var info = this.info;
+    var txtRecord = info.txtRecord;
     var serverInfo = this.serverInfo;
 
     return {
         id: this.id,
-        name: info.serviceName,
-        deviceId: info.host,
-        features: serverInfo.features,
+        name: info.name,
+        fullName: info.fullname,
+        deviceId: txtRecord.deviceid || serverInfo.deviceId,
+        features: serverInfo.features || txtRecord.features,
         model: serverInfo.model,
+        interfaceName: info.networkInterface,
+        interfaceIndex: info.interfaceIndex,
+        addresses: info.addresses,
+        
+        flags: txtRecord.flags,
+        pk: txtRecord.pk,
+
+        osVersion: serverInfo.osVersion,
+        protocolVersion: serverInfo.protocolVersion,
+        sourceVersion: serverInfo.sourceVersion || txtRecord.srcvers,
+        vv: serverInfo.vv || txtRecord.vv,
 
         slideshowFeatures: [],
         supportedContentTypes: []

@@ -119,7 +119,7 @@ HLSServer.prototype.open = function ( fileFullPath, callback ) {
             callback && callback( json );
         }
         else {
-            me.emit( 'error: %s, %s', fileFullPath, e.message );
+            me.emit( 'error: %s', fileFullPath );
         }
     });
 
