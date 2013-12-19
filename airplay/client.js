@@ -13,6 +13,7 @@ var util = require( 'util' );
 var plist = require( 'plist' );
 
 var CLIENT_USERAGENT = 'MediaControl/1.0';
+var CLIENT_PING_DELAY = 30; // 心跳间隔(s)
 
 
 var Client = function ( options, callback ) {
@@ -26,11 +27,7 @@ var Client = function ( options, callback ) {
 
     this.socket = net.createConnection( options, function() {
         self.responseQueue.push( callback );
-        self.socket.write(
-            'GET /playback-info HTTP/1.1\n' +
-            'User-Agent: ' + CLIENT_USERAGENT + '\n' +
-            'Content-Length: 0\n' +
-            '\n');
+        self.ping();
     });
 
     this.socket.on( 'data', function( data ) {
@@ -43,7 +40,12 @@ var Client = function ( options, callback ) {
 
     // TODO
     this.socket.on( 'error', function ( err ) {
-        self.emit( 'error', { type: 'socket', error: err } );
+        // FIXME: 这里会时不时的抛出异常: 'Uncaught, unspecified "error" event.'
+        try {
+            self.emit( 'error', { type: 'socket', res: err } );
+        } catch( e ) {
+            console.info( e.message );
+        }
     });
 };
 
@@ -51,11 +53,37 @@ util.inherits( Client, events.EventEmitter );
 exports.Client = Client;
 
 
+// just for keep-alive
+// bug fix for '60s timeout'
+Client.prototype.ping = function ( force ) {
+    if ( !this.pingTimer || force === true ) {
+        clearTimeout( this.pingTimer );
+    }
+
+    this.socket.write(
+        'GET /playback-info HTTP/1.1\n' +
+        'User-Agent: ' + CLIENT_USERAGENT + '\n' +
+        'Content-Length: 0\n' +
+        '\n'
+    );
+    
+    this.emit( 'ping' );
+
+    // next
+    this.pingTimer = setTimeout(
+        this.ping.bind( this ),
+        CLIENT_PING_DELAY * 1000
+    );
+
+    return this;
+};
+
 Client.prototype.close = function() {
     if ( this.socket ) {
         this.socket.destroy();
     }
     this.socket = null;
+    return this;
 };
 
 Client.prototype.parseResponse = function( res ) {
@@ -116,7 +144,7 @@ Client.prototype.request = function( req, body, callback ) {
 
     // GET时不能启用Keep-Alive,会造成阻塞
     if ( req.method === 'POST') {
-        req.headers['Connection'] = 'keep-alive';
+        // req.headers['Connection'] = 'keep-alive';
     }
 
 

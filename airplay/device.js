@@ -21,6 +21,7 @@ function Device ( id, info, callback ) {
     this.id = id;
     this.info = info;
     // this.serverInfo = null;
+    this.pingDelay = 5 * 1000; // 心跳间隔
 
     this.client = new Client(
         {
@@ -34,6 +35,7 @@ function Device ( id, info, callback ) {
             });
         }
     );
+    this.client.on( 'ping', function () { self.emit( 'ping' ); });
 }
 
 util.inherits( Device, events.EventEmitter );
