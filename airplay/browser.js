@@ -35,18 +35,20 @@ Browser.prototype.init = function ( options ) {
     this.browser = mdns.createBrowser( mdns.tcp( 'airplay' ), options );
     this.browser.on( 'serviceUp', function( info ) {
         var device = self.getDevice( info );
-        if ( !device ) {
-            device = new Device( nextDeviceId++, info );
-            device.on( 'ready', function( d ) {
-                self.emit( 'deviceOn', d );
-            });
-            device.on( 'close', function( d ) {
-                delete self.devices[ d.id ];
-                self.emit( 'deviceOff', d );
-            });
-
-            self.devices[ device.id ] = device;
+        if ( device ) {
+            return;
         }
+
+        device = new Device( nextDeviceId++, info );
+        device.on( 'ready', function( d ) {
+            self.emit( 'deviceOn', d );
+        });
+        device.on( 'close', function( d ) {
+            delete self.devices[ d.id ];
+            self.emit( 'deviceOff', d );
+        });
+
+        self.devices[ device.id ] = device;
     });
     this.browser.on( 'serviceDown', function( info ) {
         var device = self.getDevice( info );

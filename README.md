@@ -11,15 +11,30 @@ node-airplay is a client library for Apple's AirPlay remote playback protocol.
 From source:
 
 	git clone https://github.com/zfkun/node-airplay.git
-	npm link node-airplay
+	npm link airplay
 
-`node-airplay` depends on both [node-plist](https://github.com/TooTallNate/node-plist) and [node_mdns](https://github.com/agnat/node_mdns). ***Unfortunately `node_mdns` is woefully out of date and has required many tweaks to get working, resulting in my [fork](https://github.com/zfkun/node_mdns).***
+### Dependencies
+
++ [node-plist](https://github.com/zfkun/node-plist)
+
+	- It's my fork, add `node-webkit` support
+ 	- If you are not in `node-webkit`, you can modify `package.json` like:
+ 		
+ 			"dependencies": {
+ 				"plist": "~0.4.3",
+ 				...
+ 			}
+ 
++ [node_mdns](https://github.com/zfkun/node_mdns)
+
+	- It's my fork, hack an error `no such record`
+	- Unfortunately the original [`node_mdns`](https://github.com/agnat/node_mdns) is woefully out of date and has required many tweaks to get working
 
 
 ### Quickstart
 
 ```js
-// play remote video
+// remote video
 var browser = require( 'airplay' ).createBrowser();
 browser.on( 'deviceOn', function( device ) {
     device.play( 'http://remotehost/video.mp4', 0, function() {
@@ -30,7 +45,7 @@ browser.start();
 ```
 
 ```JS
-// play local video
+// local video (by HLS)
 var hls = require( 'airplay' ).createHLS();
 hls.start( 7001 );
 hls.open( '/Users/zfkun/videos/1.mkv', function( info ) {
@@ -53,6 +68,7 @@ browser.start();
 + [HLS(HTTP Live Streaming)](http://tools.ietf.org/html/draft-pantos-http-live-streaming-12)
 + [ffmpeg build for ios](http://www.cocoachina.com/bbs/read.php?tid=142628&page=1)
 + [mdns User Guide](http://agnat.github.io/node_mdns/user_guide.html)
+
 
 
 ### API

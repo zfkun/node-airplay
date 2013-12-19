@@ -38,9 +38,7 @@ var Client = function ( options, callback ) {
         // util.puts( util.inspect( res ) );
 
         var fn = self.responseQueue.shift();
-        if ( fn ) {
-            fn( res );
-        }
+        fn && fn( res );
     });
 
     // TODO
@@ -111,7 +109,7 @@ Client.prototype.request = function( req, body, callback ) {
     }
 
     req.headers = req.headers || {};
-    req.headers['User-Agent'] = 'MediaControl/1.0';
+    req.headers['User-Agent'] = CLIENT_USERAGENT;
     req.headers['Content-Length'] = body
                                     ? buffer.Buffer.byteLength( body )
                                     : 0;
@@ -179,10 +177,10 @@ Client.prototype.playbackInfo = function ( callback ) {
                     duration: obj.duration,
                     position: obj.position,
                     rate: obj.rate,
+                    readyToPlay: obj.readyToPlay,
                     playbackBufferEmpty: obj.playbackBufferEmpty,
                     playbackBufferFull: obj.playbackBufferFull,
                     playbackLikelyToKeepUp: obj.playbackLikelyToKeepUp,
-                    readyToPlay: obj.readyToPlay,
                     loadedTimeRanges: obj.loadedTimeRanges,
                     seekableTimeRanges: obj.seekableTimeRanges,
 
@@ -217,35 +215,23 @@ Client.prototype.stop = function ( callback ) {
     });
 };
 Client.prototype.rate = function ( value, callback ) {
-    this.post(
-        '/rate?value=' + value,
-        null,
-        function( res ) {
-            callback && callback();
-        }
-    );
+    this.post( '/rate?value=' + value, null, function( res ) {
+        callback && callback( res );
+    });
 };
 Client.prototype.volume = function ( value, callback ) {
-    this.post(
-        '/volume?value=' + value,
-        null,
-        function( res ) {
-            callback && callback();
-        }
-    );
+    this.post( '/volume?value=' + value, null, function( res ) {
+        callback && callback( res );
+    });
 };
 Client.prototype.scrub = function ( position, callback ) {
-    this.post(
-        '/scrub?position=' + position,
-        null,
-        function( res ) {
-            callback && callback( res );
-        }
-    );
+    this.post( '/scrub?position=' + position, null, function( res ) {
+        callback && callback( res );
+    });
 };
 Client.prototype.reverse = function ( callback ) {
     this.post( '/reverse', null, function( res ) {
-        callback && callback();
+        callback && callback( res );
     });
 };
 Client.prototype.photo = function ( callback ) {

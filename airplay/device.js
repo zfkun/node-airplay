@@ -8,7 +8,6 @@
 
 var events = require( 'events' );
 var util = require( 'util' );
-var plist = require( 'plist' );
 
 var Client = require( './client' ).Client;
 

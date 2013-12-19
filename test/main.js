@@ -1,14 +1,12 @@
-var hls = require( '../airplay' ).createHLS();
-
-hls.start( 7001 );
-
-
-
-var browser = require('../airplay').createBrowser( {} );
+var browser = require('../airplay').createBrowser();
 
 browser.on( 'deviceOn', function( device ) {
     console.log( 'device online: ' + device.id );
-    
+
+    var hls = require( '../airplay' ).createHLS();
+
+    hls.start( 7001 );
+
     hls.open( '/Users/fankun/git/zfkun/iplay/video/1.mkv', function ( info ) {
         console.info( 'opened file:', info );
 
