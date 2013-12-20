@@ -82,10 +82,10 @@ browser.start();
 
 ## API
 
-+ Browser
++ [Browser](https://github.com/zfkun/node-airplay/wiki/Browser-API)
 + Device
 + [Client](https://github.com/zfkun/node-airplay/wiki/Client-API)
-+ [HLS](https://github.com/zfkun/node-airplay/wiki/HLS-Server-API)
++ [HLS](https://github.com/zfkun/node-airplay/wiki/HLS-API)
 
 
 
