@@ -32,7 +32,7 @@ From source:
 	
 + [ffmpeg](http://trac.ffmpeg.org/wiki/MacOSXCompilationGuide#Shortcut:CompileFFmpegthroughHomebrew)
 
-项目已自带(`dep目录下`)，若不喜欢，下面是自行安装命令
+~~~项目已自带(`dep目录下`)，若不喜欢，~~~下面是自行安装命令
 
 	brew install ffmpeg
 
