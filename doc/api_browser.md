@@ -6,6 +6,12 @@ Service Discovery Server for Apple TV
 
 ## API
 
+### constructor( [options] )
+
+构造函数
+
++ `option`: `Object`, 参考`mdns`的`options`
+
 
 ### start( port )
 

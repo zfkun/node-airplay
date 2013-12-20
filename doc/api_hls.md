@@ -6,6 +6,18 @@ HTTP Live Streaming Server for Apple TV
 
 ## API
 
+### constructor( [options, callback] )
+
+构造函数
+
++ `option`: `Object`
+	
+	- `streaming`: `boolean`, 是否直播模式, **暂时不支持此参数**
+	- `cache`: `boolean`, 是否支持`TS`文件缓存
+	- `duration`: `number`, `TS`分片时长(s)
+	- `lib`: `string`, `ffmpeg`库目录
+	- `out`:`string`, `TS`分片输出目录
+
 
 ### start( port )
 
