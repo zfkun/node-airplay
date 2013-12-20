@@ -168,7 +168,7 @@ Client.prototype.get = function( path, callback ) {
     this.request( { method: 'GET', path: path }, null, callback );
 };
 
-Client.prototype.post = function(path, body, callback) {
+Client.prototype.post = function( path, body, callback ) {
     this.request( { method: 'POST', path: path }, body, callback );
 };
 
@@ -231,7 +231,7 @@ Client.prototype.playbackInfo = function ( callback ) {
 Client.prototype.play = function ( src, position, callback ) {
     var body =
         'Content-Location: ' + src + '\n' +
-        'Start-Position: ' + position + '\n';
+        'Start-Position: ' + (position || 0) + '\n';
 
     this.post( '/play', body, function( res ) {
         callback && callback( res );

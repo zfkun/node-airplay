@@ -6,14 +6,14 @@ node-airplay is a client library for Apple's AirPlay remote playback protocol.
 ***some code full reference [node-airplay](https://github.com/benvanik/node-airplay), thanks!***
 
 
-### Installation
+## Installation
 
 From source:
 
 	git clone https://github.com/zfkun/node-airplay.git
 	npm link airplay
 
-### Dependencies
+## Dependencies
 
 + [node-plist](https://github.com/zfkun/node-plist)
 
@@ -31,9 +31,9 @@ From source:
 	- Unfortunately the original [`node_mdns`](https://github.com/agnat/node_mdns) is woefully out of date and has required many tweaks to get working
 
 
-### Quickstart
+## Usage
 
-```js
+``` javascript
 // remote video
 var browser = require( 'airplay' ).createBrowser();
 browser.on( 'deviceOn', function( device ) {
@@ -44,7 +44,7 @@ browser.on( 'deviceOn', function( device ) {
 browser.start();
 ```
 
-```JS
+``` javascript
 // local video (by HLS)
 var hls = require( 'airplay' ).createHLS();
 hls.start( 7001 );
@@ -62,7 +62,7 @@ browser.start();
 ```
 
 
-### Help
+## Help
 
 + [Unofficial AirPlay Protocol Specification](http://nto.github.io/AirPlay.html)
 + [HLS(HTTP Live Streaming)](http://tools.ietf.org/html/draft-pantos-http-live-streaming-12)
@@ -71,12 +71,16 @@ browser.start();
 
 
 
-### API
+## API
 
-    todo
++ Browser
++ Device
++ [Client](https://github.com/zfkun/node-airplay/wiki/Client-API)
++ [HLS](https://github.com/zfkun/node-airplay/wiki/HLS-Server-API)
 
 
-### Todo
+
+## Todo
 
 + 多码率切换
 + 外挂字幕
