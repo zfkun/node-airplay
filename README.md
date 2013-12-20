@@ -29,6 +29,14 @@ From source:
 
 	- It's my fork, hack an error `no such record`
 	- Unfortunately the original [`node_mdns`](https://github.com/agnat/node_mdns) is woefully out of date and has required many tweaks to get working
+	
++ [ffmpeg](http://trac.ffmpeg.org/wiki/MacOSXCompilationGuide#Shortcut:CompileFFmpegthroughHomebrew)
+
+项目已自带(`dep目录下`)，若不喜欢，下面是自行安装命令
+
+	brew install ffmpeg
+
+	
 
 
 ## Usage
@@ -67,6 +75,7 @@ browser.start();
 + [Unofficial AirPlay Protocol Specification](http://nto.github.io/AirPlay.html)
 + [HLS(HTTP Live Streaming)](http://tools.ietf.org/html/draft-pantos-http-live-streaming-12)
 + [ffmpeg build for ios](http://www.cocoachina.com/bbs/read.php?tid=142628&page=1)
++ [ffmpeg build for MacOS](http://trac.ffmpeg.org/wiki/MacOSXCompilationGuide#Shortcut:CompileFFmpegthroughHomebrew)
 + [mdns User Guide](http://agnat.github.io/node_mdns/user_guide.html)
 
 
