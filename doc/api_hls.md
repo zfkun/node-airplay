@@ -108,6 +108,16 @@ HTTP Live Streaming Server for Apple TV
 + `out`: 线程输出数据
 
 
+### stream
+
+	function ( index, size ) {}
+
+`TS`分片被访问请求时触发
+
++ `index`: 当前被请求`TS`分片索引
++ `size`: `TS`分片总数
+
+
 
 ### error
 

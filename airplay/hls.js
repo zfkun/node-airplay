@@ -30,6 +30,9 @@ function HLSServer( options ) {
     ops.duration = ops.duration || 20;
     // 编解码库目录
     ops.lib = path.normalize( ops.lib || ( __dirname + '/../dep' ) ) + '/';
+    if ( !fs.existsSync( ops.lib ) ) {
+        ops.lib = '';   
+    }
     // TS分片输出目录
     ops.out = path.normalize( ops.out || ( __dirname + '/../out' ) ) + '/';
     if ( !fs.existsSync( ops.out ) ) {
@@ -109,15 +112,14 @@ HLSServer.prototype.open = function ( fileFullPath, callback ) {
         var json;
         try {
             json = JSON.parse( output );
-        } catch (e) {}
-
-        if ( !json ) {
+        } catch (e) {
             self.emit(
                 'error',
                 { type: 'open', err: e.message, file: fileFullPath }
             );
         }
-        else {
+
+        if ( json ) {
             self.videoInfo = json;
             self.emit( 'open', { file: fileFullPath, info: json } );
         }
@@ -250,21 +252,22 @@ HLSServer.prototype.httpHandler = function ( request, response ) {
     else if ( uri.pathname === this.getURI( 'playlist' ) ) {
         var videoDuration = this.videoInfo.format.duration;
         var tsDuration = ops.duration;
+        var tsSize = Math.ceil( parseFloat( videoDuration, 10) / tsDuration );
+        // update store
+        this.segmentSize = tsSize;
 
         body.push( '#EXTM3U' );
         body.push( '#EXT-X-VERSION:3' );
         // body.push( '#EXT-X-PLAYLIST-TYPE:EVENT' );
-        body.push( '#EXT-X-TARGETDURATION:' + (tsDuration + 0.5) );
         body.push( '#EXT-X-MEDIA-SEQUENCE:0' );
         body.push( '#EXT-X-TARGETDURATION:' + tsDuration );
         body.push( '#EXT-X-PLAYLIST-TYPE:VOD' );
         body.push( '#EXT-X-ALLOW-CACHE:' + ( ops.cache ? 'YES' : 'NO') );
         
-        var tsSize = Math.ceil( parseFloat( videoDuration, 10) / tsDuration );
         // var lastDuration = tsSize % 10;
         for ( var i = 1; i < tsSize; i++) {
             // TODO 最后一个分片的时长不能保证正确
-            body.push( '#EXTINF:' + (tsDuration + 0.5) + ',' );
+            body.push( '#EXTINF:' + tsDuration + ',' );
             body.push( this.getURI( 'segment', i ) );
         }
 
@@ -285,6 +288,8 @@ HLSServer.prototype.httpHandler = function ( request, response ) {
 
         var tsIndex = path.basename( uri.pathname, '.ts' ) | 0;
         this.segment( tsIndex, request, response );
+
+        this.emit( 'stream', tsIndex, this.segmentSize );
 
         // fs.createReadStream( filePath ).pipe( response );
         // response.write( fs.readFileSync( filePath ) );
