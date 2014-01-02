@@ -6,7 +6,7 @@
     "contributors": [],
     "dependencies": {
         "mdns": "https://github.com/zfkun/node_mdns/tarball/master",
-        "plist": "https://github.com/zfkun/node-plist/tarball/master"
+        "plist": "~0.4.3"
     },
     "keywords": [
         "apple",

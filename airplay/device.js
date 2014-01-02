@@ -78,7 +78,7 @@ Device.prototype.match = function ( info ) {
 
 Device.prototype.getInfo = function() {
     var info = this.info;
-    var txtRecord = info.txtRecord;
+    var txtRecord = info.txtRecord || {};
     var serverInfo = this.serverInfo;
 
     return {

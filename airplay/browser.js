@@ -34,6 +34,10 @@ Browser.prototype.init = function ( options ) {
 
     this.browser = mdns.createBrowser( mdns.tcp( 'airplay' ), options );
     this.browser.on( 'serviceUp', function( info ) {
+        if ( !self.isValid( info ) ) {
+            return;
+        }
+
         var device = self.getDevice( info );
         if ( device ) {
             return;
@@ -51,6 +55,10 @@ Browser.prototype.init = function ( options ) {
         self.devices[ device.id ] = device;
     });
     this.browser.on( 'serviceDown', function( info ) {
+        if ( !self.isValid( info ) ) {
+            return;
+        }
+
         var device = self.getDevice( info );
         if ( device ) {
             device.close();
@@ -68,6 +76,13 @@ Browser.prototype.stop = function() {
     this.browser.stop();
     this.emit( 'stop' );
     return this;
+};
+
+Browser.prototype.isValid = function ( info ) {
+    if ( !info || !/^en\d+$/.test( info.networkInterface ) ) {
+        return !1;
+    }
+    return !0;
 };
 
 Browser.prototype.getDevice = function ( info ) {

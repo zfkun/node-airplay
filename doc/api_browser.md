@@ -23,6 +23,15 @@ Service Discovery Server for Apple TV
 停止 Browser
 
 
+### isValid( info )
+
+检测是否为有效的`AppleTV`设备
+
++ `info`: `Object`
+
+**注: 默认只选择 `networkInterface` 匹配 `/^en\d+$/` 的设备**
+
+
 ### getDevice( info )
 
 根据`info`获取匹配的`AppleTV`设备
