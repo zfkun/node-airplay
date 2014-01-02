@@ -8,10 +8,14 @@ node-airplay is a client library for Apple's AirPlay remote playback protocol.
 
 ## Installation
 
+From npm:
+
+	npm intall airplay2 -g
+
 From source:
 
 	git clone https://github.com/zfkun/node-airplay.git
-	npm link airplay
+	npm link
 
 ## Dependencies
 
@@ -50,7 +54,7 @@ From source:
 
 ``` javascript
 // remote video
-var browser = require( 'airplay' ).createBrowser();
+var browser = require( 'airplay2' ).createBrowser();
 browser.on( 'deviceOn', function( device ) {
     device.play( 'http://remotehost/video.mp4', 0, function() {
         console.info( 'video playing...' );
@@ -61,13 +65,13 @@ browser.start();
 
 ``` javascript
 // local video (by HLS)
-var hls = require( 'airplay' ).createHLS();
+var hls = require( 'airplay2' ).createHLS();
 hls.start( 7001 );
 hls.open( '/Users/zfkun/videos/1.mkv', function( info ) {
     console.info( 'video opened: ', info );
 });
 
-var browser = require( 'airplay' ).createBrowser();
+var browser = require( 'airplay2' ).createBrowser();
 browser.on( 'deviceOn', function( device ) {
     device.play( hls.getURI(), 0, function() {
         console.info( 'video playing...' );
