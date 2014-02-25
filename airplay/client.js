@@ -206,6 +206,7 @@ Client.prototype.playbackInfo = function ( callback ) {
                     position: obj.position,
                     rate: obj.rate,
                     readyToPlay: obj.readyToPlay,
+                    readyToPlayMs: obj.readyToPlayMs,
                     playbackBufferEmpty: obj.playbackBufferEmpty,
                     playbackBufferFull: obj.playbackBufferFull,
                     playbackLikelyToKeepUp: obj.playbackLikelyToKeepUp,

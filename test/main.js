@@ -30,12 +30,12 @@ browser.on( 'deviceOn', function( device ) {
     hls.on( 'error', function ( err ) {
         console.info( '[HLS] segment error: ', util.inspect( err ) );
     });
-    hls.start( 7001 );
+    hls.start( 7002 );
 
 
     hls.open( '/Users/fankun/git/zfkun/iplay/video/1.mkv', function ( info ) {
 
-        device.play( hls.getURI(), 0, function ( res ) {
+        device.play( hls.getURI(), '0.000000', function ( res ) {
             console.info( '开始播放啦: ', res );
 
             setTimeout(function(){
@@ -85,7 +85,7 @@ browser.on( 'deviceOn', function( device ) {
                         }, 2000);
                     }
                 });
-            }, 2000);
+            }, 4000);
         });
 
     });

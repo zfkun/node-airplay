@@ -1,4 +1,4 @@
-node-airplay
+node-airplay [![NPM version](https://badge.fury.io/js/airplay2.png)](http://badge.fury.io/js/airplay2) [![DevDependencies Status](https://david-dm.org/zfkun/node-airplay/dev-status.png)](https://david-dm.org/zfkun/node-airplay#info=devDependencies)
 =================
 
 node-airplay is a client library for Apple's AirPlay remote playback protocol.

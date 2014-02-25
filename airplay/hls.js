@@ -218,6 +218,14 @@ HLSServer.prototype.command4FFMpeg = function ( tsIndex, tsOutput ) {
         ]);
     }
 
+    // TODO: HLS by ffmpeg
+    // opt = opt.concat([
+    //     '-f', 'hls',
+    //     '-hls_time', '10',
+    //     '-hls_list_size', '999',
+    //     'out/0.m3u8'
+    // ]);
+
     opt.push( tsOutput );
 
     return opt;
