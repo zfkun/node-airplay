@@ -63,7 +63,7 @@ browser.on( 'deviceOn', function( device ) {
 
                                                         setTimeout(function() {
                                                             // device.reverse( function ( res ) {
-                                                            device.play( 'http://192.168.1.7:7001/', 0.5, function () {
+                                                            device.play( hls.getURI(), 0.5, function () {
                                                                 console.info( '重新播放啦:', res );
 
                                                                 setTimeout(function(){

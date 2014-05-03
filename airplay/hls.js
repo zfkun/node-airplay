@@ -73,8 +73,14 @@ HLSServer.prototype.stop = function() {
 };
 
 HLSServer.prototype.getURI = function ( type, index ) {
-    if ( type === 'playlist' ) {
+    if ( type === 'video' ) {
         return '/stream/0.m3u8';
+    }
+    else if ( type === 'audio' ) {
+        return '/straem/1.m3u8';
+    }
+    else if ( type === 'iframes' ) {
+        return '/iframes.m3u8';
     }
     else if ( type === 'segment' ) {
         return '/stream/0/' + index + '.ts';
@@ -121,10 +127,16 @@ HLSServer.prototype.open = function ( fileFullPath, callback ) {
 
         if ( json ) {
             self.videoInfo = json;
+
+            // update store
+            self.segmentSize = Math.ceil( parseFloat( json.format.duration, 10 ) / self.options.duration );
+
             self.emit( 'open', { file: fileFullPath, info: json } );
         }
 
-        callback && callback( json );
+        if ( callback ) {
+            callback( json );
+        }
 
         self.openThread = null;
     });
@@ -196,11 +208,9 @@ HLSServer.prototype.command4FFMpeg = function ( tsIndex, tsOutput ) {
     // h264 && aac
     if ( isH264 ) {
         opt = opt.concat([
-            '-c:v', 'copy',
-            '-c:a', 'copy',
-            // '-g', 100,
-            // '-vcodec', 'copy',
-            // '-acodec', 'copy',
+            '-c:v', 'libx264', // libx264 || copy
+            '-c:a', 'aac', // aac || copy
+            '-strict', '-2',
             '-vbsf', 'h264_mp4toannexb'
         ]);
     }
@@ -240,12 +250,20 @@ HLSServer.prototype.httpHandler = function ( request, response ) {
     this.emit( 'request', request );
 
     if ( uri.pathname === '/' ) {
-
         body.push( '#EXTM3U' );
-        body.push( '#EXT-X-MEDIA:TYPE=VIDEO,GROUP-ID="low",LANGUAGE="en",NAME="main",DEFAULT=YES,AUTOSELECT=YES' );
-        // body.push( '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=300000,CODECS="mp4a.40.2,avc1.640028",AUDIO="audio"' );
-        body.push( '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=300000,AUDIO="audio"' );
-        body.push( this.getURI( 'playlist' ) );
+        body.push( '#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="audio",LANGUAGE="und",NAME="Original Audio",DEFAULT=YES,AUTOSELECT=YES' );
+
+        // stream#0
+        body.push( '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=20000000,CODECS="mp4a.40.2,avc1.640028",AUDIO="audio"' );
+        body.push( this.getURI( 'video' ) );
+
+        // // stream#1
+        // body.push( '#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=20000000,CODECS="ac-3,avc1.640028",AUDIO="audio"' );
+        // body.push( '/stream/1.m3u8' );
+
+        // // frames
+        // body.push( '#EXT-X-I-FRAME-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=20000000,CODECS="avc1.640028",URI="/iframes.m3u8"' );
+        
         body.push( '#EXT-X-ENDLIST' );
         body = body.join( '\n' );
 
@@ -257,12 +275,9 @@ HLSServer.prototype.httpHandler = function ( request, response ) {
 
         response.end();
     }
-    else if ( uri.pathname === this.getURI( 'playlist' ) ) {
-        var videoDuration = this.videoInfo.format.duration;
+    else if ( uri.pathname === this.getURI( 'video' ) ) {
         var tsDuration = ops.duration;
-        var tsSize = Math.ceil( parseFloat( videoDuration, 10) / tsDuration );
-        // update store
-        this.segmentSize = tsSize;
+        var videoDuration = parseFloat( this.videoInfo.format.duration, 10 );
 
         body.push( '#EXTM3U' );
         body.push( '#EXT-X-VERSION:3' );
@@ -271,11 +286,14 @@ HLSServer.prototype.httpHandler = function ( request, response ) {
         body.push( '#EXT-X-TARGETDURATION:' + tsDuration );
         body.push( '#EXT-X-PLAYLIST-TYPE:VOD' );
         body.push( '#EXT-X-ALLOW-CACHE:' + ( ops.cache ? 'YES' : 'NO') );
-        
-        // var lastDuration = tsSize % 10;
-        for ( var i = 1; i < tsSize; i++) {
-            // TODO 最后一个分片的时长不能保证正确
-            body.push( '#EXTINF:' + tsDuration + ',' );
+
+        for ( var i = 1, n = this.segmentSize; i < n; i++ ) {
+            body.push(
+                '#EXTINF:'
+                // 最后一个分段一般会少一点，需要精确计算下
+                + ( i >= n ? ( videoDuration % tsDuration || tsDuration ) : tsDuration )
+                + ','
+            );
             body.push( this.getURI( 'segment', i ) );
         }
 
@@ -290,11 +308,33 @@ HLSServer.prototype.httpHandler = function ( request, response ) {
         response.write( body );
         response.end();
     }
+    // else if ( uri.pathname === this.getURI( 'audio' ) ) {
+    // }
+    // else if ( uri.pathname === this.getURI( 'iframes' ) ) {
+    //     body.push( '#EXTM3U' );
+    //     body.push( '#EXT-X-VERSION:4' );
+    //     body.push( '#EXT-X-TARGETDURATION:3' );
+    //     body.push( '#EXT-X-I-FRAMES-ONLY' );
+    //     body.push( '#EXT-X-PLAYLIST-TYPE:VOD' );
+    //     body.push( '#EXT-X-ALLOW-CACHE:YES' );
+    //     body.push( '#EXT-X-MEDIA-SEQUENCE:0' );
+
+    //     body.push( '#EXTINF:3.000000000000000,' );
+    //     body.push( '#EXT-X-BYTERANGE:2097152@564' );
+        
+    //     body.push( '/iframes/0.ts' );
+    //     body.push( '#EXTINF:3.000000000000000,' );
+    //     body.push( '#EXT-X-BYTERANGE:2097152@564' );
+    //     body.push( '/iframes/1.ts' );
+    //     ...
+
+    //     body.push( '#EXT-X-ENDLIST' );
+    // }
     else if ( /^\/stream\/0\//.test( uri.pathname ) ) {
         header['Content-Type'] = 'video/MP2T';
         response.writeHead( 200, header );
 
-        var tsIndex = path.basename( uri.pathname, '.ts' ) | 0;
+        var tsIndex = parseInt( path.basename( uri.pathname, '.ts' ), 10 );
         this.segment( tsIndex, request, response );
 
         this.emit( 'stream', tsIndex, this.segmentSize );
