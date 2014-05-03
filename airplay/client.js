@@ -35,7 +35,9 @@ var Client = function ( options, callback ) {
         // util.puts( util.inspect( res ) );
 
         var fn = self.responseQueue.shift();
-        fn && fn( res );
+        if ( fn ) {
+            fn( res );
+        }
     });
 
     // TODO
@@ -60,20 +62,23 @@ Client.prototype.ping = function ( force ) {
         clearTimeout( this.pingTimer );
     }
 
+    if ( !this.pingHandler ) {
+        this.pingHandler = this.ping.bind( this );
+    }
+
     this.socket.write(
-        'GET /playback-info HTTP/1.1\n' +
-        'User-Agent: ' + CLIENT_USERAGENT + '\n' +
-        'Content-Length: 0\n' +
-        '\n'
+        [
+            'GET /playback-info HTTP/1.1',
+            'User-Agent: ' + CLIENT_USERAGENT,
+            'Content-Length: 0',
+            '\n'
+        ].join( '\n' ) + '\n'
     );
-    
-    this.emit( 'ping' );
+
+    this.emit( 'ping', !!force );
 
     // next
-    this.pingTimer = setTimeout(
-        this.ping.bind( this ),
-        CLIENT_PING_DELAY * 1000
-    );
+    this.pingTimer = setTimeout( this.pingHandler, CLIENT_PING_DELAY * 1000 );
 
     return this;
 };
@@ -122,7 +127,7 @@ Client.prototype.parseResponse = function( res ) {
 
     // Trim body?
     return {
-        statusCode: parseInt( statusMatch[1] ),
+        statusCode: parseInt( statusMatch[1], 10 ),
         statusReason: statusMatch[2],
         headers: allHeaders,
         body: body
@@ -138,9 +143,7 @@ Client.prototype.request = function( req, body, callback ) {
 
     req.headers = req.headers || {};
     req.headers['User-Agent'] = CLIENT_USERAGENT;
-    req.headers['Content-Length'] = body
-                                    ? buffer.Buffer.byteLength( body )
-                                    : 0;
+    req.headers['Content-Length'] = body ? buffer.Buffer.byteLength( body ) : 0;
 
     // GET时不能启用Keep-Alive,会造成阻塞
     if ( req.method === 'POST') {
@@ -190,8 +193,13 @@ Client.prototype.serverInfo = function ( callback ) {
                 vv: obj.vv
             };
         }
+        else {
+            this.emit( 'error', { type: 'serverInfo', res: res } );
+        }
 
-        callback && callback( info );
+        if ( callback ) {
+            callback( info );
+        }
     });
 };
 Client.prototype.playbackInfo = function ( callback ) {
@@ -230,9 +238,10 @@ Client.prototype.playbackInfo = function ( callback ) {
 
 // position: 0 ~ 1
 Client.prototype.play = function ( src, position, callback ) {
-    var body =
-        'Content-Location: ' + src + '\n' +
-        'Start-Position: ' + (position || 0) + '\n';
+    var body = [
+        'Content-Location: ' + src,
+        'Start-Position: ' + (position || 0)
+    ].join( '\n' ) + '\n';
 
     this.post( '/play', body, function( res ) {
         callback && callback( res );
