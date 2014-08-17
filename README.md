@@ -10,7 +10,7 @@ node-airplay is a client library for Apple's AirPlay remote playback protocol.
 
 From npm:
 
-	npm intall airplay2 -g
+	npm install airplay2 -g
 
 From source:
 
