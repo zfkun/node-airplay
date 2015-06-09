@@ -216,7 +216,7 @@ HLSServer.prototype.command4FFMpeg = function ( tsIndex, tsOutput ) {
     }
     else {
         opt = opt.concat([
-            '-c:v', 'linx264',
+            '-c:v', 'libx264',
             '-c:a', 'aac',
             // '-g', 100,
             // '-vcodec', 'copy',
