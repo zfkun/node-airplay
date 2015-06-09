@@ -1,0 +1,29 @@
+{
+  "name": "node-airplay",
+  "version": "0.1.4",
+  "homepage": "https://github.com/zfkun/node-airplay",
+  "authors": [
+    "zfkun <zfkun@msn.com>"
+  ],
+  "description": "Apple AirPlay client library for AppleTV",
+  "main": "airplay.js",
+  "moduleType": [
+    "node"
+  ],
+  "keywords": [
+    "apple",
+    "mac",
+    "media",
+    "airplay",
+    "hls",
+    "ffmpeg"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
