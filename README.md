@@ -12,6 +12,10 @@ From npm:
 
 	npm install airplay2 -g
 
+From bower:
+
+    bower install node-airplay
+
 From source:
 
 	git clone https://github.com/zfkun/node-airplay.git
@@ -19,7 +23,7 @@ From source:
 
 ## Dependencies
 
-+ [node-plist](https://github.com/TooTallNate)
++ [node-plist](https://github.com/TooTallNate/node-plist)
 
 	- had merge my fix, see my [pull-request](https://github.com/TooTallNate/node-plist/pull/42)
 
