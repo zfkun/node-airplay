@@ -33,7 +33,7 @@ browser.on( 'deviceOn', function( device ) {
     hls.start( 7002 );
 
 
-    hls.open( '/Users/fankun/git/zfkun/iplay/video/1.mkv', function ( info ) {
+    hls.open( '/Users/zfkun/git/zfkun/iplay/video/1.mkv', function ( info ) {
 
         device.play( hls.getURI(), '0.000000', function ( res ) {
             console.info( '开始播放啦: ', res );
