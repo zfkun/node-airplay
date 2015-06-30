@@ -33,18 +33,6 @@ From source:
 
 	- had merge my fix, see my [pull-request](https://github.com/TooTallNate/node-plist/pull/42)
 
-
-~~+ [node-plist](https://github.com/zfkun/node-plist)~~
-
-~~- It's my fork, add `node-webkit` support~~
-
-~~- If you are not in `node-webkit`, you can modify `package.json` like:~~
- 		
-~~"dependencies": {
-      "plist": "~0.4.3",
-      ...
-}~~
-
  
 + [node_mdns](https://github.com/zfkun/node_mdns)
 
