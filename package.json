@@ -17,5 +17,6 @@
         "ffmpeg"
     ],
     "main": "airplay.js",
+    "license": "MIT",
     "repository": "git://github.com/zfkun/node-airplay.git"
 }
