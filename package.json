@@ -1,12 +1,12 @@
 {
     "name": "airplay2",
     "description": "Apple AirPlay client library for AppleTV",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "author": "zfkun <zfkun@msn.com>",
     "contributors": [],
     "dependencies": {
         "mdns": "https://github.com/zfkun/node_mdns/tarball/master",
-        "plist": "~0.4.3"
+        "plist": "~1.1.0"
     },
     "keywords": [
         "apple",
@@ -17,5 +17,6 @@
         "ffmpeg"
     ],
     "main": "airplay.js",
+    "license": "MIT",
     "repository": "git://github.com/zfkun/node-airplay.git"
 }
