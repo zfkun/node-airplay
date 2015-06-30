@@ -34,6 +34,12 @@ var Client = function (options, callback) {
         var res = self.parseResponse(data.toString());
         // util.puts(util.inspect(res));
 
+        // ensure that the response is correct
+        if (!res) {
+            self.emit('error', { type: 'socket', res: res });
+            return;
+        }
+
         var fn = self.responseQueue.shift();
         if (fn) {
             fn(res);
@@ -124,6 +130,11 @@ Client.prototype.parseResponse = function(res) {
         var key = headerLine.substr(0, headerLine.indexOf(':'));
         var value = headerLine.substr(key.length + 2);
         allHeaders[key] = value;
+    }
+
+    // ensure that the response is correct
+    if (!statusMatch) {
+        return null;
     }
 
     // Trim body?
