@@ -1,7 +1,7 @@
 {
     "name": "airplay2",
     "description": "Apple AirPlay client library for AppleTV",
-    "version": "0.1.6",
+    "version": "0.1.7",
     "author": "zfkun <zfkun@msn.com>",
     "contributors": [],
     "dependencies": {
