@@ -32,7 +32,7 @@ hls.start( 7001 );
 
 
 setTimeout(function () {
-    var filePath = '/Users/fankun/git/zfkun/iplay/video/1.mkv';
+    var filePath = '/Users/zfkun/git/zfkun/iplay/video/1.mkv';
     hls.open( filePath, function ( info ) {
         console.info( 'Visit: %s', hls.baseURI + hls.getURI( 'segment', 10 ) );
     });

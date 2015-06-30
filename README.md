@@ -1,5 +1,11 @@
-node-airplay [![NPM version](https://badge.fury.io/js/airplay2.png)](http://badge.fury.io/js/airplay2) [![DevDependencies Status](https://david-dm.org/zfkun/node-airplay/dev-status.png)](https://david-dm.org/zfkun/node-airplay#info=devDependencies)
+node-airplay
 =================
+
+[![NPM](https://nodei.co/npm/airplay2.png?downloads=true&downloadRank=true&stars=true)](https://nodei.co/npm/airplay2/)
+
+[![npm version](https://badge.fury.io/js/airplay2.svg)](http://badge.fury.io/js/airplay2)
+[![Dependency Status](https://david-dm.org/zfkun/node-airplay.svg)](https://david-dm.org/zfkun/node-airplay)
+
 
 node-airplay is a client library for Apple's AirPlay remote playback protocol.
 
@@ -10,11 +16,11 @@ node-airplay is a client library for Apple's AirPlay remote playback protocol.
 
 From npm:
 
-	npm install airplay2 -g
+	npm install airplay2
 
 From bower:
 
-    bower install node-airplay
+    bower install airplay
 
 From source:
 
@@ -47,8 +53,6 @@ From source:
 	
 + [ffmpeg](http://trac.ffmpeg.org/wiki/MacOSXCompilationGuide#Shortcut:CompileFFmpegthroughHomebrew)
 
-~~项目已自带(`dep目录下`)，若不喜欢，~~下面是自行安装命令
-
 	brew install ffmpeg
 
 	
@@ -58,10 +62,10 @@ From source:
 
 ``` javascript
 // remote video
-var browser = require( 'airplay2' ).createBrowser();
-browser.on( 'deviceOn', function( device ) {
-    device.play( 'http://remotehost/video.mp4', 0, function() {
-        console.info( 'video playing...' );
+var browser = require('airplay2').createBrowser();
+browser.on('deviceOn', function(device) {
+    device.play('http://remotehost/video.mp4', 0, function() {
+        console.info('video playing...');
     });
 });
 browser.start();
@@ -69,16 +73,16 @@ browser.start();
 
 ``` javascript
 // local video (by HLS)
-var hls = require( 'airplay2' ).createHLS();
-hls.start( 7001 );
-hls.open( '/Users/zfkun/videos/1.mkv', function( info ) {
-    console.info( 'video opened: ', info );
+var hls = require('airplay2').createHLS();
+hls.start(7001);
+hls.open('/Users/zfkun/videos/1.mkv', function(info) {
+    console.info('video opened: ', info);
 });
 
-var browser = require( 'airplay2' ).createBrowser();
-browser.on( 'deviceOn', function( device ) {
-    device.play( hls.getURI(), 0, function() {
-        console.info( 'video playing...' );
+var browser = require('airplay2').createBrowser();
+browser.on('deviceOn', function(device) {
+    device.play(hls.getURI(), 0, function() {
+        console.info('video playing...');
     });
 });
 browser.start();
