@@ -174,7 +174,11 @@ HLSServer.prototype.segment = function ( index, req, res ) {
 
     f.stdout.on( 'end', function () {
         self.emit( 'segment', { index: index, file: outfile, out: output } );
-        fs.createReadStream( outfile ).pipe( res );
+        if ( fs.existsSync( outfile ) ) {
+            fs.createReadStream( outfile ).pipe( res );
+        } else {
+            self.emit( 'error', { type: 'segment', err: 'Output file not found', index: index, file: outfile } );
+        }
     });
 
 };
